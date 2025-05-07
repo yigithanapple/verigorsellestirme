@@ -1,0 +1,39 @@
+# Gerekli kutuphaneler
+library(ggplot2)
+
+# Varsayimsal veriler
+team_data <- data.frame(
+  team = c("Manchester City", "Real Madrid", "Bayern Munich", "Paris Saint-Germain", "Chelsea", "Barcelona"),
+  shots_faced = c(150, 140, 130, 120, 115, 110),
+  goals_conceded = c(10, 12, 14, 8, 9, 7)
+)
+
+# Sutlar ve yedigi goller icin cubuk grafik
+ggplot(team_data, aes(x = reorder(team, -shots_faced))) +
+  geom_bar(aes(y = shots_faced, fill = "Yuzlesilen Sutlar"), stat = "identity", position = "dodge", color = "black", width = 0.7) +
+  geom_bar(aes(y = goals_conceded, fill = "Yenilen Goller"), stat = "identity", position = "dodge", color = "black", width = 0.7) +
+  labs(
+    title = "2023-2024 Sampiyonlar Ligi Takim Performansi (Yuzlesilen Sutlar & Yenilen Goller)",
+    x = "Takim",
+    y = "Adet",
+    fill = ""
+  ) +
+  scale_fill_manual(values = c("Yuzlesilen Sutlar" = "#1ABC9C", "Yenilen Goller" = "#2980B9")) +
+  theme_minimal(base_size = 16) +
+  theme(
+    plot.title = element_text(size = 8, face = "bold", hjust = 0.5, color = "#2C3E50", family = "Arial"),
+    axis.title = element_text(size = 16, face = "bold", color = "#34495E", family = "Arial"),
+    axis.text = element_text(size = 13, color = "#34495E", family = "Arial"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12, color = "#34495E"),
+    axis.text.y = element_text(size = 13, color = "#34495E"),
+    panel.grid.major = element_line(linetype = "dotted", color = "gray70"),
+    panel.background = element_rect(fill = "#FAFAFA", color = "#D3D3D3", linewidth = 0.8),
+    plot.background = element_rect(fill = "#FAFAFA", color = NA),
+    legend.position = "top",
+    legend.title = element_text(size = 11, face = "bold"),
+    legend.text = element_text(size = 13),
+    legend.key = element_rect(fill = "#FAFAFA", color = NA)
+  ) +
+  geom_text(aes(y = shots_faced + 2, label = shots_faced), size = 5, color = "black", fontface = "bold") +
+  geom_text(aes(y = goals_conceded + 2, label = goals_conceded), size = 5, color = "black", fontface = "bold") +
+  scale_y_continuous(limits = c(0, max(team_data$shots_faced) + 20))
