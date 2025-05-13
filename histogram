@@ -1,21 +1,18 @@
-# Gerekli kütüphaneler
 library(ggplot2)
 
-# Asist verileri
 assist_data <- data.frame(
   player = c("Jude Bellingham", "Marcel Sabitzer", "Vinicius Junior", "Raphinha", 
              "Ilkay Gundogan", "Bukayo Saka", "Harry Kane", "Galeno"),
   assists = c(5, 5, 5, 4, 4, 4, 4, 4)
 )
 
-# Estetikleştirilmiş dikey histogram (bitişik çubuklar)
 ggplot(assist_data, aes(x = factor(player, levels = player), y = assists, fill = assists)) +
-  geom_col(color = "white", width = 0.9, show.legend = FALSE) +
+  geom_col(color = "white", width = 1, show.legend = FALSE) +
   geom_text(aes(label = assists), vjust = -0.8, size = 5.5, fontface = "bold", color = "#2C3E50") +
   labs(
     title = "2023-2024 Sampiyonlar Ligi En Cok Asist Yapan 8 Oyuncu",
     x = NULL,
-    y = "Asist Sayisi"
+    y = "Asist Sayısı"
   ) +
   theme_minimal(base_size = 16) +
   theme(
@@ -30,4 +27,5 @@ ggplot(assist_data, aes(x = factor(player, levels = player), y = assists, fill =
     plot.margin = margin(20, 30, 20, 30)
   ) +
   scale_fill_gradient(low = "#76D7C4", high = "#2E86C1") +
+  scale_x_discrete(expand = c(0, 0)) +
   ylim(0, 6)
