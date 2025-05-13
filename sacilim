@@ -1,27 +1,28 @@
-# Gerekli kütüphaneler
 library(ggplot2)
-library(showtext)  # Fontlar için (opsiyonel)
+library(showtext)
+font_add_google(name = "Lato", family = "lato")
+showtext_auto()
 
-# Veri çerçevesi
 takimlar <- data.frame(
-  Takim = c("Real Madrid", "Manchester City", "Bayern Munich", "Paris Saint-Germain", 
-            "Chelsea", "Barcelona", "Atletico Madrid", "Juventus"),
-  Sut = c(130, 125, 135, 115, 110, 120, 118, 122),  # Toplam şut sayısı
-  Gol = c(20, 18, 22, 16, 14, 17, 15, 19)  # Toplam gol sayısı
+  Takim = c("Real Madrid", "Manchester City", "Bayern Munih", "Paris Saint-Germain", 
+            "Arsenal", "Barcelona", "Atletico Madrid", "Borussia Dortmund",
+            "Inter", "Napoli", "RB Leipzig", "Lazio", "Porto", "PSV Eindhoven", 
+            "Real Sociedad", "FC Kopenhag"),
+  Sut = c(145, 140, 138, 132, 128, 125, 120, 118, 115, 112, 110, 108, 105, 102, 100, 98),
+  Gol = c(28, 28, 21, 19, 19, 20, 23, 17, 10, 12, 14, 10, 16, 10, 9, 10)
 )
 
-# Grafik
 ggplot(takimlar, aes(x = Sut, y = Gol, size = Gol, fill = Gol, label = Takim)) +
   geom_point(shape = 21, stroke = 1.2) +
   geom_text(vjust = -1, family = "lato", size = 3.5, color = "#2c3e50") +
-  scale_size_continuous(range = c(4, 8)) +  # Nokta boyut aralığı
-  scale_fill_gradient(low = "#1abc9c", high = "#e74c3c") +  # Gol sayısına göre renk
-  scale_x_continuous(breaks = seq(105, 135, 5), limits = c(104, 136)) +  # X ekseni 5'er artacak
-  scale_y_continuous(breaks = seq(10, 24, 1), limits = c(9, 25)) +
+  scale_size_continuous(range = c(4, 8)) +
+  scale_fill_gradient(low = "#1abc9c", high = "#e74c3c") +
+  scale_x_continuous(breaks = seq(95, 150, 5), limits = c(95, 150)) +
+  scale_y_continuous(breaks = seq(8, 30, 2), limits = c(8, 30)) +
   labs(
-    title = "2023-2024 Şampiyonlar Ligi",
-    subtitle = "Takımların toplam şut ve gol sayıları",
-    x = "Toplam Şut Sayısı",
+    title = "2023-2024 Sampiyonlar Ligi",
+    subtitle = "Son 16 Takımlarının Toplam Sut ve Gol Sayıları",
+    x = "Toplam Sut Sayısı",
     y = "Toplam Gol Sayısı",
     size = "Gol Sayısı"
   ) +
