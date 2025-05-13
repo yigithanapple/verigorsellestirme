@@ -1,15 +1,12 @@
-# Gerekli kütüphaneler
 library(ggplot2)
 library(dplyr)
 library(showtext)
-library(scales)  # yüzdelik için
-library(RColorBrewer)  # RColorBrewer paleti için
+library(scales)
+library(RColorBrewer)
 
-# Google font ekleme
 font_add_google("Lato", "lato")
 showtext_auto()
 
-# Veri çerçevesi
 oyuncular <- data.frame(
   Oyuncu = c("Harry Kane", "Kylian Mbappe", "Vinicius Junior", "Robert Lewandowski",
              "Erling Haaland", "Alvaro Morata", "Jude Bellingham", "Raphinha",
@@ -17,23 +14,21 @@ oyuncular <- data.frame(
   Goller = c(8, 8, 7, 6, 6, 5, 5, 5, 5, 5)
 )
 
-# Yüzdelik ve etiket sütunu
 oyuncular <- oyuncular %>%
   mutate(
     Yuzde = Goller / sum(Goller),
-    Etiket = paste0(Oyuncu, "\n(", Goller, " goals, ", percent(Yuzde, accuracy = 0.1), ")")
+    Etiket = paste0(Oyuncu, "\n", Goller, " gol, ", percent(Yuzde, accuracy = 0.1))
   )
 
-# Pasta grafiği
 ggplot(oyuncular, aes(x = "", y = Goller, fill = Etiket)) +
   geom_bar(stat = "identity", width = 1, color = "white") +
   coord_polar("y", start = 0) +
-  labs(title = "Top Scorers of UEFA Champions League 2023-2024") +
+  labs(title = "2023-2024 Şampiyonlar Ligi En Golcü Oyuncular") +
   theme_void(base_family = "lato") +
   theme(
     plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
     legend.title = element_blank(),
-    legend.text = element_text(size = 9.5, lineheight = 1.2),
+    legend.text = element_text(size = 10, lineheight = 1.8),
     legend.position = "right"
   ) +
   scale_fill_brewer(palette = "Paired")
