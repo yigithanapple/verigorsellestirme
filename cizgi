@@ -1,50 +1,36 @@
-# Gerekli kutuphaneler
 library(ggplot2)
+library(sysfonts)
 library(showtext)
-library(dplyr)
 
-# Google Font ekleme
-font_add_google("Poppins", "poppins")
+font_add_google(name = "Montserrat", family = "mont")
 showtext_auto()
 
-# Veri
-mac_verisi <- data.frame(
-  Mac_No = 1:13,
-  Rakip = c("Union Berlin", "Napoli", "Braga", "Braga", "Napoli", "Union Berlin",
-            "RB Leipzig", "RB Leipzig", "Manchester City", "Manchester City",
-            "Bayern Munich", "Bayern Munich", "Borussia Dortmund"),
-  Asama = c(rep("Grup Asamasi", 6), rep("Son 16", 2), rep("Ceyrek Final", 2),
-            rep("Yari Final", 2), "Final"),
-  Atisan_Gol = c(1, 3, 2, 3, 4, 3, 1, 2, 3, 1, 2, 2, 2)
-)
+takimlar <- c("Real Madrid", "Manchester City", "Atletico Madrid", "Bayern Munih",
+              "Barcelona", "Arsenal", "Paris Saint-Germain", "Borussia Dortmund",
+              "Porto", "RB Leipzig", "Manchester United", "Napoli", "FC Kopenhag",
+              "Galatasaray", "Shakhtar Donetsk", "Inter", "Feyenoord")
 
-# Grafik
-ggplot(mac_verisi, aes(x = Mac_No, y = Atisan_Gol)) +
-  geom_area(aes(fill = Asama), alpha = 0.15, show.legend = FALSE) +
-  geom_line(color = "#34495E", size = 1.8, linetype = "solid") +
-  geom_point(color = "#E74C3C", size = 4, shape = 21, fill = "white", stroke = 1.5) +
-  geom_text(aes(label = Atisan_Gol), vjust = -1, size = 4, fontface = "bold", family = "poppins") +
-  scale_x_continuous(
-    breaks = 1:13,
-    labels = mac_verisi$Rakip
-  ) +
-  scale_y_continuous(breaks = 0:5, limits = c(0, 5)) +
+toplam_goller <- c(28, 28, 23, 21, 20, 19, 19, 17, 16, 14, 12, 12, 10, 10, 10, 10, 9)
+
+veri <- data.frame(Takim = takimlar, Goller = toplam_goller)
+
+ggplot(veri, aes(x = reorder(Takim, Goller), y = Goller, fill = Goller)) +
+  geom_col(width = 0.6, color = "black", linewidth = 0.2) +
+  geom_text(aes(label = Goller), hjust = -0.2, color = "black", size = 3.5, family = "mont") +
+  scale_fill_gradient(low = "#87CEFA", high = "#1E90FF") +
+  coord_flip() +
   labs(
-    title = "Real Madrid - 2023/24 Sampiyonlar Ligi",
-    subtitle = "Mac Mac Atisan Gol Sayisi",
-    x = "Rakip",
-    y = "Atilan Gol Sayisi"
+    title = "2023-2024 Sampiyonlar Ligi\nTakimlarin Attigi Gol Sayilari",
+    x = NULL,
+    y = "Toplam Gol"
   ) +
-  theme_minimal(base_family = "poppins") +
+  theme_minimal(base_size = 12, base_family = "mont") +
   theme(
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 20, color = "#2C3E50"),
-    plot.subtitle = element_text(hjust = 0.5, size = 14, color = "#2C3E50"),
-    axis.title.x = element_text(size = 12, face = "bold", color = "#2C3E50"),
-    axis.title.y = element_text(size = 12, face = "bold", color = "#2C3E50"),
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, color = "#34495E"),
-    axis.text.y = element_text(size = 10, color = "#34495E"),
-    panel.grid.major = element_line(color = "gray80", linetype = "dashed"),
-    panel.grid.minor = element_blank(),
-    plot.background = element_rect(fill = "#FAFAFA", color = NA),
-    panel.background = element_rect(fill = "#FAFAFA", color = NA)
-  )
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    axis.text.y = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(size = 10),
+    panel.grid.major.y = element_blank(),
+    legend.position = "none",
+    plot.margin = margin(10, 30, 10, 10)
+  ) +
+  expand_limits(y = max(veri$Goller) + 4)
